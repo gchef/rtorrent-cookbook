@@ -1,0 +1,6 @@
+default[:rtorrent][:version]              = "0.8.6"
+default[:rtorrent][:source]               = "http://libtorrent.rakshasa.no/downloads/rtorrent-#{rtorrent[:version]}.tar.gz"
+default[:rtorrent][:checksum]             = "b804c45c01c40312926bcea6b55bb084"
+default[:rtorrent][:libtorrent][:version] = "0.12.6"
+default[:rtorrent][:libtorrent][:source]  = "http://libtorrent.rakshasa.no/downloads/libtorrent-#{rtorrent[:libtorrent][:version]}.tar.gz"
+default[:rtorrent][:libtorrent][:checksum]= "037499ed708aaf72988cee60e5a8d96b"
