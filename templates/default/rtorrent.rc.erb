@@ -1,17 +1,17 @@
 # Maximum and minimum number of peers to connect to per torrent.
-min_peers = 20
-max_peers = 100 
+min_peers = <%= @node[:rtorrent][:min_peers] %>
+max_peers = <%= @node[:rtorrent][:max_peers] %>
 
 # Same as above but for seeding completed torrents (-1 = same as downloading)
-min_peers_seed = 10
-max_peers_seed = 50
+min_peers_seed = <%= @node[:rtorrent][:min_peers_seed] %>
+max_peers_seed = <%= @node[:rtorrent][:max_peers_seed] %>
 
 # Maximum number of simultaneous uploads per torrent.
-max_uploads = 20
+max_uploads = <%= @node[:rtorrent][:max_uploads] %>
 
 # Global upload and download rate in KiB. "0" for unlimited.
-download_rate = 0 
-upload_rate = 0 
+download_rate = <%= @node[:rtorrent][:download_rate] %>
+upload_rate = <%= @node[:rtorrent][:upload_rate] %>
 
 # Default directory to save the downloaded torrents.
 directory = <%= @user_dir %>/torrents
@@ -32,13 +32,16 @@ schedule = low_diskspace,5,60,close_low_diskspace=1000M
 # or reaching total upload in Mbytes,
 # or reaching final upload ratio in percent.
 # example: stop at ratio 10.0 with at least 200M uploaded, or else ratio 20.0
+
+<% if @node[:rtorrent][:ratio] %>
 ratio.enable =
-ratio.min.set = 1000
-ratio.max.set = 2000
-ratio.upload.set = 200M
+ratio.min.set = <%= @node[:rtorrent][:ratio_min] %>
+ratio.max.set = <%= @node[:rtorrent][:ratio_max] %>
+ratio.upload.set = <%= @node[:rtorrent][:ratio_upload] %>
+<% end %>
 
 # The ip address reported to the tracker.
-ip = 94.23.218.196
+ip = <%= @node[:ipaddress] %>
 
 # The ip address the listening socket and outgoing connections is bound to.
 #bind = 127.0.0.1
@@ -49,14 +52,14 @@ port_range = 6290<%= @index %>-6290<%= @index %>
 scgi_port = 127.0.0.1:500<%= @index %>
 
 # Start opening ports at a random position within the port range.
-port_random = yes
+port_random = <%= @node[:rtorrent][:port_random] %>
 
 # Check hash for finished torrents. Might be useful until the bug is
 # fixed that causes lack of diskspace not to be properly reported.
-check_hash = no
+check_hash = <%= @node[:rtorrent][:check_hash] %>
 
 # Set whetever the client should try to connect to UDP trackers.
-use_udp_trackers = no
+use_udp_trackers = <%= @node[:rtorrent][:use_udp_trackers] %>
 
 # Alternative calls to bind and ip that should handle dynamic ip's.
 # schedule = ip_tick,0,1800,ip=rakshasa
@@ -69,7 +72,7 @@ use_udp_trackers = no
 # outgoing connections but retries with encryption if they fail, preferring
 # plaintext to RC4 encryption after the encrypted handshake
 #
-encryption = allow_incoming,enable_retry,prefer_plaintext
+encryption = <%= @node[:rtorrent][:encryption] %>
 # encryption = allow_incoming,try_outgoing
 
 #
@@ -80,18 +83,18 @@ encryption = allow_incoming,enable_retry,prefer_plaintext
 # ahead. If the value is too low the disk may not be fully utilized,
 # while if too high the kernel might not be able to keep the read
 # pages in memory thus end up trashing.
-hash_read_ahead = 64
+hash_read_ahead = <%= @node[:rtorrent][:hash_read_ahead] %>
 
 # Interval between attempts to check the hash, in milliseconds.
-hash_interval = 8
+hash_interval = <%= @node[:rtorrent][:hash_interval] %>
 
 # Number of attempts to check the hash while using the mincore status,
 # before forcing. Overworked systems might need lower values to get a
 # decent hash checking rate.
-hash_max_tries = 8
+hash_max_tries = <%= @node[:rtorrent][:hash_max_tries] %>
 
 # Max number of files to keep open simultaneously.
-max_open_files = 256
+max_open_files = <%= @node[:rtorrent][:max_open_files] %>
 
 # Number of sockets to simultaneously keep open.
 #max_open_sockets = <no default>
@@ -105,7 +108,7 @@ max_open_files = 256
 # Remove a scheduled event.
 #schedule_remove = "ip_tick1"
 
-dht = disable
-peer_exchange = no
+dht = <%= @node[:rtorrent][:dht] %>
+peer_exchange = <%= @node[:rtorrent][:peer_exchange] %>
 
-max_memory_usage = <%= @memory %>
+max_memory_usage = <%= @node[:rtorrent][:max_memory_usage] %>

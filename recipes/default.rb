@@ -158,7 +158,6 @@ data_bag("users").each do |user|
     group "root"
     variables(
       :index => index,
-      :memory => "256M",
       :user_dir => "/home/#{name}"
     )
     backup false
