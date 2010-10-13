@@ -101,6 +101,7 @@ bash "compiling libtorrent #{node[:rtorrent][:libtorrent][:version]}" do
   ./configure
   make && make install
   EOH
+  not_if "test -L /usr/local/lib/libtorrent.so"
 end
 
 remote_file "/tmp/rtorrent-#{node[:rtorrent][:version]}.tar.gz" do
