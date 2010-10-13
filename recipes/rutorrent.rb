@@ -80,7 +80,7 @@ bash "set up all rutorrent plugins" do
   tar xzf plugins-3.1.tar.gz
   rm -f plugins-3.1.tar.gz
   EOH
- not_if "test -d /var/www/rutorrent/plugins"
+  not_if "test -d /var/www/rutorrent/plugins/rss"
 end
 
 bash "set up rutorrent rpc plugin" do
@@ -97,6 +97,7 @@ bash "replace rutorrent darkpal theme with oblivion" do
   code <<-EOH
   rm -fR darkpal
   wget http://cl.ly/1f778b11b8a9d3b4f2fc/content
+  mv content oblivion.zip
   unzip oblivion.zip
   rm -f oblivion.zip
   EOH
