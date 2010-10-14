@@ -31,3 +31,12 @@ default[:rtorrent][:max_open_files]   = 256
 default[:rtorrent][:dht]              = "disable"
 default[:rtorrent][:peer_exchange]    = "no"
 default[:rtorrent][:max_memory_usage] = "256M"
+
+
+
+### RUTORRENT
+default[:rutorrent][:version]   = "3.1"
+default[:rutorrent][:source]    = "http://rutorrent.googlecode.com/files/rutorrent-#{rutorrent[:version]}.tar.gz"
+default[:rutorrent][:checksum]   = "ec486585b1e786b54d01c692d50a8b5303c78a6f"
+default[:rutorrent][:plugins][:source]    = "http://rutorrent.googlecode.com/files/plugins-#{rutorrent[:version]}.tar.gz"
+default[:rutorrent][:checksum]   = "e74461ec0f7fed2444832c0c554d024ad60369ef"

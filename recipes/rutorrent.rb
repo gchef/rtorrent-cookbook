@@ -40,54 +40,33 @@ package "subversion"
 package "ssl-cert"
 package "openssl"
 
-bash "enable Apache modules" do
-  code <<-EOH
-  a2enmod scgi
-  a2enmod auth_digest
-  a2enmod ssl
-  EOH
-  notifies :reload, resources(:service => "apache2"), :immediately
-end
-
-template "/etc/apache2/sites-available/rutorrent-ssl" do
-  source "rutorrent-ssl.erb"
-  mode 0644
+remote_file "/tmp/rutorrent-#{node[:rutorrent][:version]}.tar.gz" do
+  source node[:rutorrent][:source]
+  checksum node[:rutorrent][:checksum]
   backup false
+  action :create_if_missing
 end
 
-bash "enable Apache rutorrent-ssl" do
-  cwd "/etc/apache2"
-  code <<-EOH
-  a2dissite default
-  a2dissite default-ssl
-  a2ensite rutorrent-ssl
-  EOH
-  notifies :reload, resources(:service => "apache2"), :immediately
-end
-
-bash "set up latest rutorrent" do
+bash "set up rutorrent v#{node[:rutorrent][:version]}" do
   cwd "/var/www"
   code <<-EOH
-  svn co http://rutorrent.googlecode.com/svn/trunk/rutorrent
+  tar -zxf /tmp/rutorrent-#{node[:rutorrent][:version]}.tar.gz
+  rm -fR rutorrent/plugins
   EOH
-  not_if "test -d /var/www/rutorrent/.svn"
+  not_if %{grep 'version: "#{node[:rutorrent][:version]}"' /var/www/rutorrent/js/webui.js}
+end
+
+remote_file "/tmp/plugins-#{node[:rutorrent][:version]}.tar.gz" do
+  source node[:rutorrent][:plugins][:source]
+  checksum node[:rutorrent][:plugins][:checksum]
+  backup false
+  action :create_if_missing
 end
 
 bash "set up all rutorrent plugins" do
-  cwd "/var/www/rutorrent/"
+  cwd "/var/www/rutorrent"
   code <<-EOH
-  wget http://rutorrent.googlecode.com/files/plugins-3.1.tar.gz
-  tar xzf plugins-3.1.tar.gz
-  rm -f plugins-3.1.tar.gz
-  EOH
-  not_if "test -d /var/www/rutorrent/plugins/rss"
-end
-
-bash "set up rutorrent rpc plugin" do
-  cwd "/tmp"
-  code <<-EOH
-  svn co http://rutorrent.googlecode.com/svn/trunk/plugins/rpc
-  mv rpc /var/www/rutorrent/plugins/
+  tar -zxf /tmp/plugins-#{node[:rutorrent][:version]}.tar.gz
   EOH
   not_if "test -d /var/www/rutorrent/plugins/rpc"
 end
@@ -111,68 +90,7 @@ directory "/var/log/rutorrent" do
   recursive true
 end
 
-data_bag("users").each do |user|
-  properties = data_bag_item("users", user)
-  name = properties["id"]
-  index = properties["index"]
+execute "chmod -fR 777 /var/www/rutorrent/share"
 
-  if File.directory?('/etc/apache2')
-    apache2conf = File.read('/etc/apache2/apache2.conf')
-    unless apache2conf.include? "127.0.0.1:500#{index}"
-      File.open('/etc/apache2/apache2.conf', 'a') { |f| f.puts "SCGIMount /var/www/rutorrent/RPC#{index} 127.0.0.1:500#{index}" }
-    end
-
-    file "/etc/apache2/.passwds" do
-      mode 0644
-      action :create_if_missing
-      backup false
-    end
-
-    if File.exists?('/etc/apache2/.passwds')
-      htdigest = properties["htdigest"]
-      apache2passwds = File.read('/etc/apache2/.passwds')
-      unless apache2passwds.include? htdigest
-        File.open('/etc/apache2/.passwds', 'a') { |f| f.puts "#{name}:Authorized:#{htdigest}" }
-      end
-    end
-
-    scgi_mounts
-  end
-
-  directory "/var/www/rutorrent/conf/users/#{name}" do
-    owner "www-data"
-    group "www-data"
-    mode 0755
-  end
-
-  template "/var/www/rutorrent/conf/users/#{name}/access.ini" do
-    source "rutorrent.access.ini.erb"
-    owner "www-data"
-    group "www-data"
-    mode 0755
-    backup false
-  end
-
-  template "/var/www/rutorrent/conf/users/#{name}/plugins.ini" do
-    source "rutorrent.plugins.ini.erb"
-    owner "www-data"
-    group "www-data"
-    mode 0755
-    backup false
-  end
-
-  template "/var/www/rutorrent/conf/users/#{name}/config.php" do
-    source "rutorrent.config.php.erb"
-    owner "www-data"
-    group "www-data"
-    mode 0755
-    backup false
-    variables(
-      :name => name,
-      :port => "500#{index}",
-      :rpc => "RPC#{index}"
-    )
-  end
-end
-
-execute "chmod -fR 755 /var/www/rutorrent && chown -fR www-data:www-data /var/www/rutorrent"
+include_recipe "rtorrent::rutorrent_users"
+include_recipe "rtorrent::rutorrent_apache"
