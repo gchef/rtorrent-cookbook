@@ -111,4 +111,4 @@ max_open_files = <%= @node[:rtorrent][:max_open_files] %>
 dht = <%= @node[:rtorrent][:dht] %>
 peer_exchange = <%= @node[:rtorrent][:peer_exchange] %>
 
-max_memory_usage = <%= @node[:rtorrent][:max_memory_usage] %>
+max_memory_usage = <%= @max_memory || @node[:rtorrent][:max_memory_usage] %>

@@ -129,6 +129,7 @@ data_bag("users").each do |user|
   properties = data_bag_item("users", user)
   name = properties["id"]
   index = properties["index"]
+  max_memory = properties["max_memory"]
   user name do
     password  properties["password"]
     supports  :manage_home => true
@@ -158,7 +159,8 @@ data_bag("users").each do |user|
     group "root"
     variables(
       :index => index,
-      :user_dir => "/home/#{name}"
+      :user_dir => "/home/#{name}",
+      :max_memory => max_memory
     )
     backup false
   end
