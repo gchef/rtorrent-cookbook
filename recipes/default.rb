@@ -20,6 +20,11 @@
 include_recipe "build-essential"
 include_recipe "ruby"
 include_recipe "sysadmin"
+include_recipe "helper"
+
+class Chef::Recipe
+  include FileHelpers
+end
 
 package "autoconf"
 package "automake"
@@ -176,33 +181,31 @@ service "rtorrent" do
   supports :start => true, :stop => true, :restart => true, "force-reload" => true
 end
 
-# data_bag("users").each do |user|
-#   properties = data_bag_item("users", user)
-#   user = properties["id"]
-#   directory "/home/#{user}/.ssh" do
-#     owner user
-#     group user
-#     mode 0700
-#     recursive true
-#     action :create
-#     not_if "test -d /home/#{user}/.ssh"
-#   end
-#
-#   file "/home/#{user}/.ssh/authorized_keys" do
-#     owner user
-#     group user
-#     mode 0600
-#     action :create_if_missing
-#     backup false
-#   end
-#
-#   data_bag("admins").each do |admin|
-#     authorized_keys = File.read("/home/#{user}/.ssh/authorized_keys")
-#     properties = data_bag_item("admins", admin)
-#     properties["keys"].each do |key|
-#       unless authorized_keys.include? key
-#         File.open("/home/#{user}/.ssh/authorized_keys", 'a') { |f| f.puts key }
-#       end
-#     end
-#   end
-# end
+data_bag("users").each do |user|
+  properties = data_bag_item("users", user)
+  user = properties["id"]
+  directory "/home/#{user}/.ssh" do
+    owner user
+    group user
+    mode 0700
+  end
+
+  file "/home/#{user}/.ssh/authorized_keys" do
+    owner user
+    group user
+    mode 0600
+    action :create_if_missing
+    backup false
+  end
+
+  ruby_block "Add all admins SSH keys" do
+    block do
+      data_bag("admins").each do |admin|
+        properties = data_bag_item("admins", admin)
+        properties["keys"].each do |key|
+          file_append("/home/#{user}/.ssh/authorized_keys", key)
+        end
+      end
+    end
+  end
+end
