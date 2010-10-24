@@ -136,6 +136,7 @@ data_bag("users").each do |user|
   index = properties["index"]
   max_memory = properties["max_memory"]
   user name do
+    # openssl passwd -1 <real-password>
     password  properties["password"]
     supports  :manage_home => true
     home      "/home/#{name}"

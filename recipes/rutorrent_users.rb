@@ -15,6 +15,7 @@ data_bag("users").each do |user|
       backup false
     end
 
+    # printf "<user>:<realm>:<real-password>" | md5sum
     if File.exists?('/etc/apache2/.passwds')
       htdigest = properties["htdigest"]
       apache2passwds = File.read('/etc/apache2/.passwds')
