@@ -146,21 +146,21 @@ data_bag("users").each do |user|
   directory "/home/#{name}" do
     owner "root"
     group "root"
-    mode 0755
+    mode "0755"
   end
 
   %w(.session watch torrents).each do |dir|
     directory "/home/#{name}/#{dir}" do
       owner name
       group name
-      mode 0777
+      mode "0777"
       recursive true
     end
   end
 
   template "/home/#{name}/.rtorrent.rc" do
     source "rtorrent.rc.erb"
-    mode 0644
+    mode "0644"
     owner "root"
     group "root"
     variables(
@@ -174,7 +174,7 @@ end
 
 template "/etc/init.d/rtorrent" do
   source "rtorrent.init.erb"
-  mode 0755
+  mode "0755"
   backup false
 end
 
@@ -182,20 +182,17 @@ service "rtorrent" do
   supports :start => true, :stop => true, :restart => true, "force-reload" => true
 end
 
-data_bag("users").each do |user|
-  properties = data_bag_item("users", user)
-  user = properties["id"]
+node[:users].each do |user, properties|
   directory "/home/#{user}/.ssh" do
     owner user
     group user
-    mode 0700
+    mode "0700"
   end
 
   file "/home/#{user}/.ssh/authorized_keys" do
     owner user
     group user
-    mode 0600
-    action :create_if_missing
+    mode "0600"
     backup false
   end
 

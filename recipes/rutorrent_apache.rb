@@ -9,7 +9,7 @@ end
 
 template "/etc/apache2/sites-available/rutorrent-ssl" do
   source "rutorrent-ssl.erb"
-  mode 0644
+  mode "0644"
   backup false
 end
 

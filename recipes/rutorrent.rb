@@ -86,7 +86,7 @@ end
 directory "/var/log/rutorrent" do
   owner "www-data"
   group "www-data"
-  mode 0755
+  mode "0755"
   recursive true
 end
 
