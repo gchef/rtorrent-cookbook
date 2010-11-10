@@ -2,8 +2,10 @@
 
 Sets up rtorrent 0.8.6 with libtorrent 0.12.6.
 
-Separate recipe for setting up rutorrent v3.1 on Apache with multi-user support.
+Separate recipe for setting up rutorrent v3.1.
+
+Bonus recipe for rutorrent Apache configuration with multi-user support.
 
 = REQUIREMENTS:
 
-Only works on Ubuntu for now, but it should be relatively easy to add support for other distros
+Only works on Ubuntu, should be relatively easy to add support for other distros. Any takers?

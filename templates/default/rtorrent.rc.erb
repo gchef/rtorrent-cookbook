@@ -35,9 +35,9 @@ schedule = low_diskspace,5,60,close_low_diskspace=1000M
 
 <% if @node[:rtorrent][:ratio] %>
 ratio.enable =
-ratio.min.set = <%= @node[:rtorrent][:ratio_min] %>
-ratio.max.set = <%= @node[:rtorrent][:ratio_max] %>
-ratio.upload.set = <%= @node[:rtorrent][:ratio_upload] %>
+ratio.min.set = <%= @ratio_min || @node[:rtorrent][:ratio_min] %>
+ratio.max.set = <%= @ratio_max || @node[:rtorrent][:ratio_max] %>
+ratio.upload.set = <%= @ratio_upload || @node[:rtorrent][:ratio_upload] %>
 <% end %>
 
 # The ip address reported to the tracker.

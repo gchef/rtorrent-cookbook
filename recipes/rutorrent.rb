@@ -92,5 +92,4 @@ end
 
 execute "chmod -fR 777 /var/www/rutorrent/share"
 
-include_recipe "rtorrent::rutorrent_users"
 include_recipe "rtorrent::rutorrent_apache"

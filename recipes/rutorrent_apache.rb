@@ -4,6 +4,12 @@ bash "Enable Apache SCGI" do
   not_if { File.symlink?("/etc/apache2/mods-enabled/scgi.load") }
 end
 
+file "/etc/apache2/conf.d/scgi_mounts" do
+  mode "0644"
+  action :create_if_missing
+  backup false
+end
+
 bash "Enable Apache AuthDigest" do
   code "a2enmod auth_digest"
   notifies :reload, resources(:service => "apache2")

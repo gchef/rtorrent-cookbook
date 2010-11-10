@@ -79,7 +79,7 @@ package "subversion"
 package "ucf" # Update Configuration File: preserve user changes to config files
 
 bash "SVN checkout xmlrpc-c" do
-  cwd "/tmp"
+  cwd "/root"
   code <<-EOH
   svn co https://xmlrpc-c.svn.sourceforge.net/svnroot/xmlrpc-c/advanced xmlrpc-c
   cd xmlrpc-c
@@ -89,7 +89,7 @@ bash "SVN checkout xmlrpc-c" do
   not_if "which xmlrpc-c-config"
 end
 
-remote_file "/tmp/libtorrent-#{node[:rtorrent][:libtorrent][:version]}.tar.gz" do
+remote_file "/root/libtorrent-#{node[:rtorrent][:libtorrent][:version]}.tar.gz" do
   source node[:rtorrent][:libtorrent][:source]
   checksum node[:rtorrent][:libtorrent][:checksum]
   backup false
@@ -97,7 +97,7 @@ remote_file "/tmp/libtorrent-#{node[:rtorrent][:libtorrent][:version]}.tar.gz" d
 end
 
 bash "compiling libtorrent #{node[:rtorrent][:libtorrent][:version]}" do
-  cwd "/tmp"
+  cwd "/root"
   code <<-EOH
   tar -zxf libtorrent-#{node[:rtorrent][:libtorrent][:version]}.tar.gz
   cd libtorrent-#{node[:rtorrent][:libtorrent][:version]}
@@ -109,7 +109,7 @@ bash "compiling libtorrent #{node[:rtorrent][:libtorrent][:version]}" do
   not_if "test -L /usr/local/lib/libtorrent.so"
 end
 
-remote_file "/tmp/rtorrent-#{node[:rtorrent][:version]}.tar.gz" do
+remote_file "/root/rtorrent-#{node[:rtorrent][:version]}.tar.gz" do
   source node[:rtorrent][:source]
   checksum node[:rtorrent][:checksum]
   backup false
@@ -117,7 +117,7 @@ remote_file "/tmp/rtorrent-#{node[:rtorrent][:version]}.tar.gz" do
 end
 
 bash "compiling rtorrent #{node[:rtorrent][:version]}" do
-  cwd "/tmp"
+  cwd "/root"
   code <<-EOH
   tar -zxf rtorrent-#{node[:rtorrent][:version]}.tar.gz
   cd rtorrent-#{node[:rtorrent][:version]}
@@ -130,80 +130,8 @@ bash "compiling rtorrent #{node[:rtorrent][:version]}" do
   not_if "which rtorrent"
 end
 
-data_bag("users").each do |user|
-  properties = data_bag_item("users", user)
-  name = properties["id"]
-  index = properties["index"]
-  max_memory = properties["max_memory"]
-  user name do
-    # openssl passwd -1 <real-password>
-    password  properties["password"]
-    supports  :manage_home => true
-    home      "/home/#{name}"
-    shell     "/bin/bash"
-  end
-
-  directory "/home/#{name}" do
-    owner "root"
-    group "root"
-    mode "0755"
-  end
-
-  %w(.session watch torrents).each do |dir|
-    directory "/home/#{name}/#{dir}" do
-      owner name
-      group name
-      mode "0777"
-      recursive true
-    end
-  end
-
-  template "/home/#{name}/.rtorrent.rc" do
-    source "rtorrent.rc.erb"
-    mode "0644"
-    owner "root"
-    group "root"
-    variables(
-      :index => index,
-      :user_dir => "/home/#{name}",
-      :max_memory => max_memory
-    )
-    backup false
-  end
-end
-
 template "/etc/init.d/rtorrent" do
   source "rtorrent.init.erb"
   mode "0755"
   backup false
-end
-
-service "rtorrent" do
-  supports :start => true, :stop => true, :restart => true, "force-reload" => true
-end
-
-node[:users].each do |user, properties|
-  directory "/home/#{user}/.ssh" do
-    owner user
-    group user
-    mode "0700"
-  end
-
-  file "/home/#{user}/.ssh/authorized_keys" do
-    owner user
-    group user
-    mode "0600"
-    backup false
-  end
-
-  ruby_block "Add all admins SSH keys" do
-    block do
-      data_bag("admins").each do |admin|
-        properties = data_bag_item("admins", admin)
-        properties["keys"].each do |key|
-          file_append("/home/#{user}/.ssh/authorized_keys", key)
-        end
-      end
-    end
-  end
 end
