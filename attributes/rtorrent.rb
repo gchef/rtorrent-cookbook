@@ -15,7 +15,7 @@ default[:rtorrent][:upload_rate]      = 0
 
 default[:rtorrent][:ratio]            = true
 default[:rtorrent][:ratio_min]        = 200
-default[:rtorrent][:ratio_max]        = 500
+default[:rtorrent][:ratio_max]        = 300
 default[:rtorrent][:ratio_upload]     = "200M"
 
 default[:rtorrent][:port_random]      = "yes"
@@ -23,9 +23,9 @@ default[:rtorrent][:check_hash]       = "no"
 default[:rtorrent][:use_udp_trackers] = "no"
 default[:rtorrent][:encryption]       = "allow_incoming,enable_retry,prefer_plaintext"
 
-default[:rtorrent][:hash_read_ahead]  = 64
-default[:rtorrent][:hash_interval]    = 8
-default[:rtorrent][:hash_max_tries]   = 8
+default[:rtorrent][:hash_read_ahead]  = 10
+default[:rtorrent][:hash_interval]    = 10
+default[:rtorrent][:hash_max_tries]   = 5
 default[:rtorrent][:max_open_files]   = 256
 
 default[:rtorrent][:dht]              = "disable"

@@ -94,7 +94,7 @@ hash_interval = <%= @node[:rtorrent][:hash_interval] %>
 hash_max_tries = <%= @node[:rtorrent][:hash_max_tries] %>
 
 # Max number of files to keep open simultaneously.
-max_open_files = <%= @node[:rtorrent][:max_open_files] %>
+max_open_files = <%= @max_open_files || @node[:rtorrent][:max_open_files] %>
 
 # Number of sockets to simultaneously keep open.
 #max_open_sockets = <no default>
