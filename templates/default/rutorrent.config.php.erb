@@ -11,15 +11,15 @@
         @define('LOG_RPC_CALLS', false, true);
         @define('LOG_RPC_FAULTS', true, true);
 
-        // for php      
+        // for php
         @define('PHP_USE_GZIP', false, true);
         @define('PHP_GZIP_LEVEL', 2, true);
 
         $do_diagnostic = true;
-        $log_file = '/var/log/rutorrent/<%= @name %>.log';          // path to log file (comment or make empty to disable logging)
+        $log_file = '/var/log/rutorrent/<%= @username %>.log';          // path to log file (comment or make empty to disable logging)
         $saveUploadedTorrents = true;
 
-        $topDirectory = '/home/<%= @name %>';                    // Upper available directory. Absolute path with trail slash.
+        $topDirectory = '<%= @user_home %>';                    // Upper available directory. Absolute path with trail slash.
         $forbidUserSettings = false;
 
         $scgi_port = <%= @port %>;
@@ -35,8 +35,8 @@
                 "stat"  => '/usr/bin/stat',                  // Something like /usr/bin/stat. If empty, will be founded in PATH.
         );
 
-        // For web->rtorrent link through unix domain socket 
-        // (scgi_local in rtorrent conf file), change variables 
+        // For web->rtorrent link through unix domain socket
+        // (scgi_local in rtorrent conf file), change variables
         // above to something like this:
         //
         // $scgi_port = 0;
