@@ -40,7 +40,7 @@ package "subversion"
 package "ssl-cert"
 package "openssl"
 
-remote_file "/tmp/rutorrent-#{node[:rutorrent][:version]}.tar.gz" do
+remote_file "/usr/local/src/rutorrent-#{node[:rutorrent][:version]}.tar.gz" do
   source node[:rutorrent][:source]
   checksum node[:rutorrent][:checksum]
   backup false
@@ -50,13 +50,13 @@ end
 bash "set up rutorrent v#{node[:rutorrent][:version]}" do
   cwd "/var/www"
   code <<-EOH
-  tar -zxf /tmp/rutorrent-#{node[:rutorrent][:version]}.tar.gz
+  tar -zxf /usr/local/src/rutorrent-#{node[:rutorrent][:version]}.tar.gz
   rm -fR rutorrent/plugins
   EOH
   not_if %{grep 'version: "#{node[:rutorrent][:version]}"' /var/www/rutorrent/js/webui.js}
 end
 
-remote_file "/tmp/plugins-#{node[:rutorrent][:version]}.tar.gz" do
+remote_file "/usr/local/src/plugins-#{node[:rutorrent][:version]}.tar.gz" do
   source node[:rutorrent][:plugins][:source]
   checksum node[:rutorrent][:plugins][:checksum]
   backup false
@@ -66,7 +66,7 @@ end
 bash "set up all rutorrent plugins" do
   cwd "/var/www/rutorrent"
   code <<-EOH
-  tar -zxf /tmp/plugins-#{node[:rutorrent][:version]}.tar.gz
+  tar -zxf /usr/local/src/plugins-#{node[:rutorrent][:version]}.tar.gz
   EOH
   not_if "test -d /var/www/rutorrent/plugins/rpc"
 end
