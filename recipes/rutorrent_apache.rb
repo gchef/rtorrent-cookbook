@@ -49,4 +49,4 @@ bash "Enable Apache rutorrent SSL site" do
   not_if { File.exists?("/etc/apache2/sites-enabled/rutorrent-ssl") }
 end
 
-execute "chown -fR www-data:www-data /var/www/rutorrent"
+execute "chown -fR www-data:www-data /var/www"
