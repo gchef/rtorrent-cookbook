@@ -14,8 +14,8 @@ default[:rtorrent][:download_rate]    = 0
 default[:rtorrent][:upload_rate]      = 0
 
 default[:rtorrent][:ratio]            = true
-default[:rtorrent][:ratio_min]        = 200
-default[:rtorrent][:ratio_max]        = 300
+default[:rtorrent][:ratio_min]        = 500
+default[:rtorrent][:ratio_max]        = 1000
 default[:rtorrent][:ratio_upload]     = "200M"
 
 default[:rtorrent][:port_random]      = "yes"
