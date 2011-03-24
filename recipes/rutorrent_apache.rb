@@ -1,3 +1,5 @@
+service "apache2"
+
 bash "Enable Apache SCGI" do
   code "a2enmod scgi"
   notifies :reload, resources(:service => "apache2")

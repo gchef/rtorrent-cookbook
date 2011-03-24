@@ -17,15 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "build-essential"
-include_recipe "ruby"
-include_recipe "sysadmin"
-include_recipe "helper"
-
-class Chef::Recipe
-  include FileHelpers
-end
-
 package "autoconf"
 package "automake"
 package "autotools-dev"
@@ -79,7 +70,7 @@ package "subversion"
 package "ucf" # Update Configuration File: preserve user changes to config files
 
 bash "SVN checkout xmlrpc-c" do
-  cwd "/root"
+  cwd "/usr/local/src"
   code <<-EOH
   svn co https://xmlrpc-c.svn.sourceforge.net/svnroot/xmlrpc-c/advanced xmlrpc-c
   cd xmlrpc-c
@@ -89,7 +80,7 @@ bash "SVN checkout xmlrpc-c" do
   not_if "which xmlrpc-c-config"
 end
 
-remote_file "/root/libtorrent-#{node[:rtorrent][:libtorrent][:version]}.tar.gz" do
+remote_file "/usr/local/src/libtorrent-#{node[:rtorrent][:libtorrent][:version]}.tar.gz" do
   source node[:rtorrent][:libtorrent][:source]
   checksum node[:rtorrent][:libtorrent][:checksum]
   backup false
@@ -97,7 +88,7 @@ remote_file "/root/libtorrent-#{node[:rtorrent][:libtorrent][:version]}.tar.gz" 
 end
 
 bash "compiling libtorrent #{node[:rtorrent][:libtorrent][:version]}" do
-  cwd "/root"
+  cwd "/usr/local/src"
   code <<-EOH
   tar -zxf libtorrent-#{node[:rtorrent][:libtorrent][:version]}.tar.gz
   cd libtorrent-#{node[:rtorrent][:libtorrent][:version]}
@@ -109,7 +100,7 @@ bash "compiling libtorrent #{node[:rtorrent][:libtorrent][:version]}" do
   not_if "test -L /usr/local/lib/libtorrent.so"
 end
 
-remote_file "/root/rtorrent-#{node[:rtorrent][:version]}.tar.gz" do
+remote_file "/usr/local/src/rtorrent-#{node[:rtorrent][:version]}.tar.gz" do
   source node[:rtorrent][:source]
   checksum node[:rtorrent][:checksum]
   backup false
@@ -117,7 +108,7 @@ remote_file "/root/rtorrent-#{node[:rtorrent][:version]}.tar.gz" do
 end
 
 bash "compiling rtorrent #{node[:rtorrent][:version]}" do
-  cwd "/root"
+  cwd "/usr/local/src"
   code <<-EOH
   tar -zxf rtorrent-#{node[:rtorrent][:version]}.tar.gz
   cd rtorrent-#{node[:rtorrent][:version]}

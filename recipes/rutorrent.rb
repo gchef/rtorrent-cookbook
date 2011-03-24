@@ -17,10 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "rtorrent"
-include_recipe "apache2"
-include_recipe "apache2::mod_php5"
-
 package "apache2-utils"
 package "php5"
 package "php5-cgi"
@@ -91,5 +87,3 @@ directory "/var/log/rutorrent" do
 end
 
 execute "chmod -fR 777 /var/www/rutorrent/share"
-
-include_recipe "rtorrent::rutorrent_apache"

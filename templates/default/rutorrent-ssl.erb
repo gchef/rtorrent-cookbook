@@ -1,6 +1,6 @@
 <IfModule mod_ssl.c>
-  <VirtualHost <%= @node.name %>:443>
-    ServerAdmin webmaster@localhost
+  <VirtualHost *:443>
+    ServerName <%= node[:bootstrap][:hostname] %>
     DocumentRoot /var/www
 
     <Directory />
@@ -16,7 +16,7 @@
     <Location /rutorrent>
       AuthType Digest
       AuthName "Authorized"
-      AuthDigestDomain /var/www/rutorrent/ http://<%= @node[:ipaddress] %>/rutorrent
+      AuthDigestDomain /var/www/rutorrent/ http://<%= node[:bootstrap][:hostname] %>/rutorrent
 
       AuthDigestProvider file
       AuthUserFile /etc/apache2/.passwds
@@ -24,13 +24,13 @@
       SetEnv R_ENV "/var/www/rutorrent"
     </Location>
 
-    ErrorLog /var/log/apache2/error.log
+    ErrorLog /var/log/apache2/<%= node[:bootstrap][:hostname] %>.error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/ssl_access.log combined
+    CustomLog /var/log/apache2/<%= node[:bootstrap][:hostname] %>.access.log combined
 
     #   SSL Engine Switch:
     #   Enable/Disable SSL for this virtual host.
