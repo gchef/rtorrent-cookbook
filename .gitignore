@@ -1,3 +1,4 @@
 metadata.json
 .chef
 pkg
+*.un~
