@@ -44,3 +44,7 @@ default[:rutorrent][:checksum]           = "516c1c5c7360f540812eb38bacaa60b2"
 
 default[:rutorrent][:plugins][:source]   = "http://rutorrent.googlecode.com/files/plugins-#{rutorrent[:version]}.tar.gz"
 default[:rutorrent][:plugins][:checksum] = "660ec019878b98c7c77b0aa6a232480a"
+
+#default[:rutorrent][:logoff][:version]   = "1.3"
+#default[:rutorrent][:logoff][:source]    = "http://rutorrent-logoff.googlecode.com/files/logoff-#{rutorrent[:logoff][:version]}.tar.gz"
+#default[:rutorrent][:logoff][:checksum]  = "53920db02625ecbb3a00dbc60b24336d6b63f54a"

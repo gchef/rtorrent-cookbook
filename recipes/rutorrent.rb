@@ -67,6 +67,20 @@ bash "set up all rutorrent plugins" do
   not_if "test -d /var/www/rutorrent/plugins/rpc"
 end
 
+#remote_file "/usr/local/src/logoff-#{node[:rutorrent][:logoff][:version]}.tar.gz" do
+  #source node[:rutorrent][:logoff][:source]
+  #checksum node[:rutorrent][:logoff][:checksum]
+  #backup false
+  #action :create_if_missing
+#end
+
+#bash "set up logoff plugin" do
+  #cwd "/var/www/rutorrent/plugins"
+  #code <<-EOH
+  #tar -zxf /usr/local/src/logoff-#{node[:rutorrent][:logoff][:version]}.tar.gz
+  #EOH
+  #not_if "test -d /var/www/rutorrent/plugins/logoff"
+#end
 
 directory "/var/log/rutorrent" do
   owner "www-data"
