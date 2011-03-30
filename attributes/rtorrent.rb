@@ -27,7 +27,7 @@ default[:rtorrent][:encryption]       = "allow_incoming,enable_retry,prefer_plai
 default[:rtorrent][:hash_read_ahead]  = 10
 default[:rtorrent][:hash_interval]    = 10
 default[:rtorrent][:hash_max_tries]   = 5
-default[:rtorrent][:max_open_files]   = 256
+default[:rtorrent][:max_open_files]   = 768
 
 default[:rtorrent][:dht]                 = "disable"
 default[:rtorrent][:peer_exchange]       = "no"
