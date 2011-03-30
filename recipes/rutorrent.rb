@@ -67,17 +67,6 @@ bash "set up all rutorrent plugins" do
   not_if "test -d /var/www/rutorrent/plugins/rpc"
 end
 
-bash "replace rutorrent darkpal theme with oblivion" do
-  cwd "/var/www/rutorrent/plugins"
-  code <<-EOH
-  rm -fR darkpal
-  wget http://cl.ly/1f778b11b8a9d3b4f2fc/content
-  mv content oblivion.zip
-  unzip oblivion.zip
-  rm -f oblivion.zip
-  EOH
-  not_if "test -d /var/www/rutorrent/plugins/oblivion"
-end
 
 directory "/var/log/rutorrent" do
   owner "www-data"

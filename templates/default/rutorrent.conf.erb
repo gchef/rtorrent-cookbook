@@ -1,0 +1,29 @@
+<VirtualHost *:80>
+  ServerName <%= node[:bootstrap][:hostname] %>
+  DocumentRoot /var/www
+
+  <Directory />
+    Options FollowSymLinks -Indexes
+    AllowOverride None
+  </Directory>
+
+  <Location /rutorrent>
+    AuthType Digest
+    AuthName "Authorized"
+    AuthDigestDomain /var/www/rutorrent/ http://<%= node[:bootstrap][:hostname] %>/rutorrent
+
+    AuthDigestProvider file
+    AuthUserFile /etc/apache2/.passwds
+    Require valid-user
+    SetEnv R_ENV "/var/www/rutorrent"
+  </Location>
+
+  ErrorLog /var/log/apache2/<%= node[:bootstrap][:hostname] %>.error.log
+
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel warn
+
+  CustomLog /var/log/apache2/<%= node[:bootstrap][:hostname] %>.access.log combined
+
+</VirtualHost>
