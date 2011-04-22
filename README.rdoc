@@ -2,7 +2,7 @@
 
 Sets up rtorrent 0.8.6 with libtorrent 0.12.6.
 
-Separate recipe for setting up rutorrent v3.1.
+Separate recipe for setting up rutorrent v3.2.
 
 Bonus recipe for rutorrent Apache configuration with multi-user support.
 
