@@ -66,10 +66,10 @@ ip = <%= @ipaddress || node[:ipaddress] %>
 
 # The ip address the listening socket and outgoing connections is bound to.
 #bind = 127.0.0.1
-scgi_port = 127.0.0.1:500<%= @index %>
+scgi_port = 127.0.0.1:50<%= @index %>
 
 # Port range to use for listening.
-port_range = 629<%= @index %>0-629<%= @index %>0
+port_range = 629<%= @index %>-629<%= @index %>
 
 # Start opening ports at a random position within the port range.
 port_random = <%= node[:rtorrent][:port_random] %>
