@@ -25,20 +25,21 @@ default[:rtorrent][:ratio_upload]        = "200M"
 #
 default[:rtorrent][:upload_rate]          = 0
 default[:rtorrent][:download_rate]        = 0
-default[:rtorrent][:min_peers]            = 10
-default[:rtorrent][:max_peers]            = 200
-default[:rtorrent][:min_peers_seed]       = 1
-default[:rtorrent][:max_peers_seed]       = 100
-default[:rtorrent][:max_uploads]          = 0
-default[:rtorrent][:max_uploads_global]   = 0
-default[:rtorrent][:max_downloads_global] = 0
+default[:rtorrent][:min_peers]            = 2
+default[:rtorrent][:max_peers]            = 40
+default[:rtorrent][:min_peers_seed]       = 2
+default[:rtorrent][:max_peers_seed]       = 80
+# default[:rtorrent][:max_uploads]          = 50
+# default[:rtorrent][:max_uploads_global]   = 0
+# default[:rtorrent][:max_downloads_global] = 0
 
 ### TRACKER RELATED SETTINGS
 #
 default[:rtorrent][:port_random]      = "yes"
 default[:rtorrent][:peer_exchange]    = "no"
-default[:rtorrent][:use_udp_trackers] = "no"
+default[:rtorrent][:use_udp_trackers] = "yes"
 default[:rtorrent][:dht]              = "disable"
+default[:rtorrent][:tracker_numwant]  = "-1"
 
 ### ADVANCED SETTINGS
 #
@@ -46,12 +47,14 @@ default[:rtorrent][:dht]              = "disable"
 # http://www.cyberciti.biz/faq/linux-unix-nginx-too-many-open-files/
 # http://www.karakas-online.de/forum/viewtopic.php?t=9834
 default[:rtorrent][:hash_read_ahead]     = 10
-default[:rtorrent][:hash_interval]       = 10
-default[:rtorrent][:hash_max_tries]      = 5
+default[:rtorrent][:hash_interval]       = 100
+default[:rtorrent][:hash_max_tries]      = 2
 default[:rtorrent][:max_open_files]      = 768
-default[:rtorrent][:max_memory_usage]    = "1024000K"
-default[:rtorrent][:send_buffer_size]    = "1024K"
-default[:rtorrent][:receive_buffer_size] = "128K"
+# default[:rtorrent][:max_memory_usage]    = "1024000K"
+# default[:rtorrent][:send_buffer_size]    = "1024K"
+# default[:rtorrent][:send_buffer_size]    = 0
+# default[:rtorrent][:receive_buffer_size] = "128K"
+# default[:rtorrent][:receive_buffer_size] = 0
 
 
 

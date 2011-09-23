@@ -50,11 +50,11 @@ min_peers_seed = <%= @min_peers_seed || node[:rtorrent][:min_peers_seed] %>
 max_peers_seed = <%= @min_peers_seed || node[:rtorrent][:max_peers_seed] %>
 
 # Maximum number of simultaneous uploads per torrent.
-max_uploads = <%= @max_uploads || node[:rtorrent][:max_uploads] %>
+# max_uploads = <%= @max_uploads || node[:rtorrent][:max_uploads] %>
 
 # Max upload and download slots allowed
-max_uploads_global = <%= @max_uploads_global || node[:rtorrent][:max_uploads_global] %>
-max_downloads_global = <%= @max_downloads_global || node[:rtorrent][:max_downloads_global] %>
+# max_uploads_global = <%= @max_uploads_global || node[:rtorrent][:max_uploads_global] %>
+# max_downloads_global = <%= @max_downloads_global || node[:rtorrent][:max_downloads_global] %>
 
 
 
@@ -81,6 +81,8 @@ use_udp_trackers = <%= node[:rtorrent][:use_udp_trackers] %>
 
 dht = <%= node[:rtorrent][:dht] %>
 
+tracker_numwant = <%= node[:rtorrent][:tracker_numwant] %>
+
 
 
 ### ADVANCED SETTINGS
@@ -105,11 +107,11 @@ max_open_files = <%= @max_open_files || node[:rtorrent][:max_open_files] %>
 
 # Set the max amount of memory space used to mapping file chunks.
 # This may also be set using ulimit -m where 3/4 will be allocated to file chunks.
-max_memory_usage = <%= @max_memory || node[:rtorrent][:max_memory_usage] %>
+# max_memory_usage = <%= @max_memory || node[:rtorrent][:max_memory_usage] %>
 
 # Adjust the send and receive buffer size for socket.
-send_buffer_size = <%= @send_buffer_size || node[:rtorrent][:send_buffer_size] %>
-receive_buffer_size = <%= @receive_buffer_size || node[:rtorrent][:receive_buffer_size] %>
+# send_buffer_size = <%= @send_buffer_size || node[:rtorrent][:send_buffer_size] %>
+# receive_buffer_size = <%= @receive_buffer_size || node[:rtorrent][:receive_buffer_size] %>
 
 
 
