@@ -45,6 +45,7 @@ end
 
 apt_repository "mediainfo" do
   uri "http://ppa.launchpad.net/shiki/mediainfo/ubuntu"
+  keyserver "keyserver.ubuntu.com"
   key "F9D8BC54"
   action :add
 end
