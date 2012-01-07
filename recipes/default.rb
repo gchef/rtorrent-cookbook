@@ -1,22 +1,3 @@
-#
-# Cookbook Name:: rtorrent
-# Recipe:: default
-#
-# Copyright 2010, Gerhard Lazu
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 package "autoconf"
 package "automake"
 package "autotools-dev"
@@ -89,15 +70,16 @@ end
 
 bash "compiling libtorrent #{node[:rtorrent][:libtorrent][:version]}" do
   cwd "/usr/local/src"
-  code <<-EOH
-  tar -zxf libtorrent-#{node[:rtorrent][:libtorrent][:version]}.tar.gz
-  cd libtorrent-#{node[:rtorrent][:libtorrent][:version]}
-  rm -f scripts/{libtool,lt*}.m4
-  ./autogen.sh
-  ./configure
-  make && make install
-  EOH
-  not_if "test -L /usr/local/lib/libtorrent.so"
+  code %{
+    if [ ! -d libtorrent-#{node[:rtorrent][:libtorrent][:version]} ]; then
+      tar -zxf libtorrent-#{node[:rtorrent][:libtorrent][:version]}.tar.gz
+      cd libtorrent-#{node[:rtorrent][:libtorrent][:version]}
+      rm -f scripts/{libtool,lt*}.m4
+      ./autogen.sh
+      ./configure
+      make && make install
+    fi
+  }
 end
 
 remote_file "/usr/local/src/rtorrent-#{node[:rtorrent][:version]}.tar.gz" do
@@ -109,16 +91,17 @@ end
 
 bash "compiling rtorrent #{node[:rtorrent][:version]}" do
   cwd "/usr/local/src"
-  code <<-EOH
-  tar -zxf rtorrent-#{node[:rtorrent][:version]}.tar.gz
-  cd rtorrent-#{node[:rtorrent][:version]}
-  rm -f scripts/{libtool,lt*}.m4
-  ./autogen.sh
-  ./configure --with-xmlrpc-c
-  make && make install
-  ldconfig
-  EOH
-  not_if "which rtorrent"
+  code %{
+    if [ ! -d rtorrent-#{node[:rtorrent][:version]} ]; then
+      tar -zxf rtorrent-#{node[:rtorrent][:version]}.tar.gz
+      cd rtorrent-#{node[:rtorrent][:version]}
+      rm -f scripts/{libtool,lt*}.m4
+      ./autogen.sh
+      ./configure --with-xmlrpc-c
+      make && make install
+      ldconfig
+    fi
+  }
 end
 
 template "/etc/init.d/rtorrent" do

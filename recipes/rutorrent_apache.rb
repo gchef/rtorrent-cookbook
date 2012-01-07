@@ -1,10 +1,9 @@
-service "apache2"
+include_recipe "apache2::mod_php5"
+include_recipe "apache2::mod_ssl"
+include_recipe "apache2::mod_auth_digest"
+include_recipe "apache2::mod_scgi"
 
-bash "Enable Apache SCGI" do
-  code "a2enmod scgi"
-  notifies :restart, resources(:service => "apache2")
-  not_if { File.symlink?("/etc/apache2/mods-enabled/scgi.load") }
-end
+service "apache2"
 
 file "/etc/apache2/conf.d/scgi_mounts" do
   mode "0644"
@@ -15,14 +14,14 @@ end
 bash "Disable Apache default site" do
   cwd "/etc/apache2"
   code "a2dissite default"
-  notifies :restart, resources(:service => "apache2")
+  notifies :restart, resources(:service => "apache2"), :delayed
   not_if { !File.exists?("/etc/apache2/sites-enabled/000-default") }
 end
 
 bash "Disable Apache default SSL site" do
   cwd "/etc/apache2"
   code "a2dissite default-ssl"
-  notifies :restart, resources(:service => "apache2")
+  notifies :restart, resources(:service => "apache2"), :delayed
   not_if { !File.exists?("/etc/apache2/sites-enabled/default-ssl") }
 end
 

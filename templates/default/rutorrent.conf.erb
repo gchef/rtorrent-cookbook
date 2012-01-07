@@ -1,5 +1,5 @@
 <VirtualHost *:80>
-  ServerName <%= node[:hostname] %>
+  ServerName <%= node[:host] %>
   DocumentRoot /var/www
 
   <Directory />
@@ -10,7 +10,7 @@
   <Location /rutorrent>
     AuthType Digest
     AuthName "Authorized"
-    AuthDigestDomain /var/www/rutorrent/ http://<%= node[:hostname] %>/rutorrent
+    AuthDigestDomain /var/www/rutorrent/ http://<%= node[:host] %>/rutorrent
 
     AuthDigestProvider file
     AuthUserFile /etc/apache2/.passwds
@@ -18,12 +18,12 @@
     SetEnv R_ENV "/var/www/rutorrent"
   </Location>
 
-  ErrorLog /var/log/apache2/<%= node[:hostname] %>.error.log
+  ErrorLog /var/log/apache2/<%= node[:host] %>.error.log
 
   # Possible values include: debug, info, notice, warn, error, crit,
   # alert, emerg.
   LogLevel warn
 
-  CustomLog /var/log/apache2/<%= node[:hostname] %>.access.log combined
+  CustomLog /var/log/apache2/<%= node[:host] %>.access.log combined
 
 </VirtualHost>

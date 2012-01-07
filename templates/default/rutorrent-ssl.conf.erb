@@ -1,6 +1,6 @@
 <IfModule mod_ssl.c>
   <VirtualHost *:443>
-    ServerName <%= node[:hostname] %>
+    ServerName <%= node[:host] %>
     DocumentRoot /var/www
 
     <Directory />
@@ -11,7 +11,7 @@
     <Location /rutorrent>
       AuthType Digest
       AuthName "Authorized"
-      AuthDigestDomain /var/www/rutorrent/ http://<%= node[:hostname] %>/rutorrent
+      AuthDigestDomain /var/www/rutorrent/ http://<%= node[:host] %>/rutorrent
 
       AuthDigestProvider file
       AuthUserFile /etc/apache2/.passwds
@@ -19,13 +19,13 @@
       SetEnv R_ENV "/var/www/rutorrent"
     </Location>
 
-    ErrorLog /var/log/apache2/<%= node[:hostname] %>.error.log
+    ErrorLog /var/log/apache2/<%= node[:host] %>.error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/<%= node[:hostname] %>.access.log combined
+    CustomLog /var/log/apache2/<%= node[:host] %>.access.log combined
 
     #   SSL Engine Switch:
     #   Enable/Disable SSL for this virtual host.
@@ -57,6 +57,7 @@
     #         Makefile to update the hash symlinks after changes.
     #SSLCACertificatePath /etc/ssl/certs/
     #SSLCACertificateFile /etc/apache2/ssl.crt/ca-bundle.crt
+    SSLCACertificateFile /etc/ssl/certs/terrabox.pem
 
     #   Certificate Revocation Lists (CRL):
     #   Set the CA revocation path where to find CA CRLs for client

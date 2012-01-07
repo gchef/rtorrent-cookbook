@@ -103,7 +103,7 @@ hash_interval = <%= node[:rtorrent][:hash_interval] %>
 hash_max_tries = <%= node[:rtorrent][:hash_max_tries] %>
 
 # Max number of files to keep open simultaneously.
-max_open_files = <%= @max_open_files || node[:rtorrent][:max_open_files] %>
+set_max_open_files = <%= @max_open_files || node[:rtorrent][:max_open_files] %>
 
 # Set the max amount of memory space used to mapping file chunks.
 # This may also be set using ulimit -m where 3/4 will be allocated to file chunks.

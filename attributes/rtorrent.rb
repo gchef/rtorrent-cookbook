@@ -1,11 +1,11 @@
 #####################################################################
 ### RTORRENT
-default[:rtorrent][:version]               = "0.8.6"
+default[:rtorrent][:version]               = "0.8.9"
 default[:rtorrent][:source]                = "http://libtorrent.rakshasa.no/downloads/rtorrent-#{rtorrent[:version]}.tar.gz"
-default[:rtorrent][:checksum]              = "b804c45c01c40312926bcea6b55bb084"
-default[:rtorrent][:libtorrent][:version]  = "0.12.6"
+default[:rtorrent][:checksum]              = "15dc9e8dd45d070f447e599bef08ef0ca421bac6e7f55e608dcd19360594af64"
+default[:rtorrent][:libtorrent][:version]  = "0.12.9"
 default[:rtorrent][:libtorrent][:source]   = "http://libtorrent.rakshasa.no/downloads/libtorrent-#{rtorrent[:libtorrent][:version]}.tar.gz"
-default[:rtorrent][:libtorrent][:checksum] = "037499ed708aaf72988cee60e5a8d96b"
+default[:rtorrent][:libtorrent][:checksum] = "cca70eb36a0c176bbd6fdb3afe2bc9f163fa4c9377fc33bc29689dec60cf6d84"
 
 ### GENERAL SETTINGS
 #
@@ -44,7 +44,7 @@ default[:rtorrent][:tracker_numwant]  = "-1"
 ### ADVANCED SETTINGS
 #
 # http://posidev.com/blog/2009/06/04/set-ulimit-parameters-on-ubuntu/
-# http://www.cyberciti.biz/faq/linux-unix-nginx-too-many-open-files/
+# http://www.cyberciti.biz/faq/linuxtunix-nginx-too-many-open-files/
 # http://www.karakas-online.de/forum/viewtopic.php?t=9834
 default[:rtorrent][:hash_read_ahead]     = 10
 default[:rtorrent][:hash_interval]       = 100
@@ -61,9 +61,9 @@ default[:rtorrent][:max_open_files]      = 768
 #####################################################################
 ### RUTORRENT
 
-default[:rutorrent][:version]            = "3.2"
+default[:rutorrent][:version]            = "3.3"
 default[:rutorrent][:source]             = "http://rutorrent.googlecode.com/files/rutorrent-#{rutorrent[:version]}.tar.gz"
-default[:rutorrent][:checksum]           = "516c1c5c7360f540812eb38bacaa60b2"
+default[:rutorrent][:checksum]           = "5349b2b32b37896a822cac287dadc9c9d3c2322d00cb5dd60cf8fdd033b62557"
 
 default[:rutorrent][:plugins][:source]   = "http://rutorrent.googlecode.com/files/plugins-#{rutorrent[:version]}.tar.gz"
-default[:rutorrent][:plugins][:checksum] = "660ec019878b98c7c77b0aa6a232480a"
+default[:rutorrent][:plugins][:checksum] = "360cf2328c4b135a7c09871fd220bf17e78f2e3bcb2d51135b1acce6c7238250"
