@@ -1,56 +1,80 @@
 <?php
-        // configuration parameters
+  // configuration parameters
 
-        // for snoopy client
-        @define('HTTP_USER_AGENT', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; pl; rv:1.9) Gecko/2008052906 Firefox/3.0', true);
-        @define('HTTP_TIME_OUT', 30, true); // in seconds
-        @define('HTTP_USE_GZIP', true, true);
+  // for snoopy client
+  @define('HTTP_USER_AGENT', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; pl; rv:1.9) Gecko/2008052906 Firefox/3.0', true);
+  @define('HTTP_TIME_OUT', 30, true); // in seconds
+  @define('HTTP_USE_GZIP', true, true);
 
-        @define('RPC_TIME_OUT', 5, true); // in seconds
+  @define('RPC_TIME_OUT', 5, true); // in seconds
 
-        @define('LOG_RPC_CALLS', false, true);
-        @define('LOG_RPC_FAULTS', true, true);
+  @define('LOG_RPC_CALLS', true, true);
+  @define('LOG_RPC_FAULTS', true, true);
 
-        // for php
-        @define('PHP_USE_GZIP', false, true);
-        @define('PHP_GZIP_LEVEL', 2, true);
+  // for php
+  // This option enables or disables use of the external gzip binary. If
+  // changed from false to true - all php generated pages > 2K will be
+  // gzipped by the external 'gzip' binary. This:
+  // * Decreases trafic (bandwidth)
+  // * Increases server load (cpu time and memory use)
+  // * Can't be used if php is already being compressed (for example, if
+  // zlib.output_compression is on)
+  @define('PHP_USE_GZIP', false, true);
+  @define('PHP_GZIP_LEVEL', 2, true);
 
-        $do_diagnostic = true;
-        $log_file = '/var/log/rutorrent/<%= @username %>.log'; // path to log file (comment or make empty to disable logging)
+  // If this is false, some diagnostics (permission checking, for
+  // example) will be skipped.
+  $do_diagnostic = true;
+  //
+   // path to log file (comment or make empty to disable logging)
+  $log_file = '/var/log/rutorrent/<%= @username %>.log';
 
-        $saveUploadedTorrents = true; // Save uploaded torrents into profile/torrents directory or not
-        $overwriteUploadedTorrents = false; // Overwrite existing uploaded torrents into profile/torrents directory or make unique name
+  // Save uploaded torrents into profile/torrents directory or not
+  $saveUploadedTorrents = false; 
+  // Overwrite existing uploaded torrents into profile/torrents directory or
+  // make unique name
+  $overwriteUploadedTorrents = false; 
 
-        $topDirectory = '<%= @user_home %>'; // Upper available directory. Absolute path with trail slash.
-        $forbidUserSettings = true;
+  // Chroot directoy for user. Users have no access to directories below
+  // the "Top" directory. Also used by plugins like getdir, diskspace ect.
+  $topDirectory = '<%= @user_home %>';
+  // If true, allows for single user style configuration, even with webauth
+  $forbidUserSettings = false;
 
-        $scgi_port = <%= @port %>;
-        $scgi_host = "127.0.0.1";
+  // For multi-user setups, each user would get a different port number
+  // (unless you are using unix based sockets)
+  $scgi_port = <%= @port %>;
+  // This will almost always be 127.0.0.1 (unless using unix based socket, in
+  // which case it would be something like $scgi_host = "unix:///tmp/rpc.socket";)
+  $scgi_host = "127.0.0.1";
 
-        $XMLRPCMountPoint = "/<%= @rpc %>"; // DO NOT DELETE THIS LINE!!! DO NOT COMMENT THIS LINE!!!
+  // XMLRPC Mount Point - This defaults to /RPC2 but can be set to anything inside
+  // your webspace. If you are setting up multiple users, each user would get a
+  // different setting here. This setting is required, don't remove it.
+  $XMLRPCMountPoint = "/<%= @rpc %>"; // DO NOT DELETE THIS LINE!!! DO NOT COMMENT THIS LINE!!!
 
-        // For web->rtorrent link through unix domain socket
-        // (scgi_local in rtorrent conf file), change variables
-        // above to something like this:
-        //
-        // $scgi_port = 0;
-        // $scgi_host = "unix:///tmp/rpc.socket";
+  // For web->rtorrent link through unix domain socket
+  // (scgi_local in rtorrent conf file), change variables
+  // above to something like this:
+  //
+  // $scgi_port = 0;
+  // $scgi_host = "unix:///tmp/rpc.socket";
 
-        $pathToExternals = array(
-                "php"   => '/usr/bin/php', // Something like /usr/bin/php. If empty, will be founded in PATH.
-                "curl"  => '/usr/bin/curl', // Something like /usr/bin/curl. If empty, will be founded in PATH.
-                "gzip"  => '/bin/gzip', // Something like /usr/bin/gzip. If empty, will be founded in PATH.
-                "id"    => '/usr/bin/id', // Something like /usr/bin/id. If empty, will be founded in PATH.
-                "stat"  => '/usr/bin/stat', // Something like /usr/bin/stat. If empty, will be founded in PATH.
-        );
+  $pathToExternals = array(
+          "php"   => '/usr/bin/php', // Something like /usr/bin/php. If empty, will be founded in PATH.
+          "curl"  => '/usr/bin/curl', // Something like /usr/bin/curl. If empty, will be founded in PATH.
+          "gzip"  => '/bin/gzip', // Something like /usr/bin/gzip. If empty, will be founded in PATH.
+          "id"    => '/usr/bin/id', // Something like /usr/bin/id. If empty, will be founded in PATH.
+          "stat"  => '/usr/bin/stat', // Something like /usr/bin/stat. If empty, will be founded in PATH.
+  );
 
-        $localhosts = array( // list of local interfaces
-                "127.0.0.1",
-                "localhost",
-        );
+  $localhosts = array( // list of local interfaces
+          "127.0.0.1",
+          "localhost",
+  );
 
-        $profilePath = '../share'; // Path to users profiles
-        $profileMask = 0777; // Mask for files and directory creation in users profiles.
-                             // Both web-server and rtorrent users must have read-write access to its.
-                             // For example, if web-server and rtorrent users are in some group then value may be 0770
+  $profilePath = '../share'; // Path to users profiles
+  $profileMask = 0777; // Mask for files and directory creation in users profiles.
+                       // Both web-server and rtorrent users must have read-write access to its.
+                       // For example, if web-server and rtorrent users are in some group then value may be 0770
 ?>
