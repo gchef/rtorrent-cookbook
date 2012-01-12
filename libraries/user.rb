@@ -12,7 +12,7 @@ module Rtorrent
       return @rtorrent if @rtorrent
 
       @node[:rtorrent].each do |key, value|
-        @resource.rtorrent[key] = value
+        @resource.rtorrent[key] ||= value
       end
       @rtorrent = @resource.rtorrent
     end

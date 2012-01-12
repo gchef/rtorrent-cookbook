@@ -46,7 +46,7 @@
   // $scgi_port = 500x;
   // This will almost always be 127.0.0.1 (unless using unix based socket, in
   // which case it would be something like $scgi_host = "unix:///tmp/rpc.socket";)
-  $scgi_host = "unix:///<%= @user.home %>/.session/rtorrent.socket";
+  $scgi_host = "unix://<%= @user.home %>/.session/rtorrent.socket";
 
   // XMLRPC Mount Point - This defaults to /RPC2 but can be set to anything inside
   // your webspace. If you are setting up multiple users, each user would get a
