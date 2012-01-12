@@ -11,10 +11,10 @@ module Rtorrent
     def rtorrent
       return @rtorrent if @rtorrent
 
-      @resource.rtorrent.each do |key, value|
-        @node[:rtorrent][key] = value
+      @node[:rtorrent].each do |key, value|
+        @resource.rtorrent[key] = value
       end
-      @rtorrent = @node[:rtorrent]
+      @rtorrent = @resource.rtorrent
     end
 
   end
