@@ -2,11 +2,11 @@
 #
 
 # Default directory to save the downloaded torrents.
-directory = <%= @user_dir %>/torrents
+directory = <%= @user.home %>/torrents
 
 # Default session directory.
 # Make sure you don't run multiple instance of rtorrent using the same session directory.
-session = <%= @user_dir %>/.session
+session = <%= @user.home %>/.session
 
 # Check hash for finished torrents. Might be useful until the bug is
 # fixed that causes lack of diskspace not to be properly reported.
@@ -25,11 +25,11 @@ encryption = <%= node[:rtorrent][:encryption] %>
 # reaching upload ratio in percent,
 # or reaching total upload in Mbytes,
 # or reaching final upload ratio in percent.
-<% if node[:rtorrent][:ratio] %>
+<% if @user.rtorrent[:ratio] %>
 ratio.enable =
-ratio.min.set = <%= @ratio_min || node[:rtorrent][:ratio_min] %>
-ratio.max.set = <%= @ratio_max || node[:rtorrent][:ratio_max] %>
-ratio.upload.set = <%= @ratio_upload || node[:rtorrent][:ratio_upload] %>
+ratio.min.set = <%= @user.rtorrent[:ratio_min] %>
+ratio.max.set = <%= @user.rtorrent[:ratio_max] %>
+ratio.upload.set = <%= @user.rtorrent[:ratio_upload] %>
 <% end %>
 
 
@@ -38,23 +38,23 @@ ratio.upload.set = <%= @ratio_upload || node[:rtorrent][:ratio_upload] %>
 #
 
 # Global upload and download rate. "0" for unlimited.
-upload_rate = <%= @upload_rate || node[:rtorrent][:upload_rate] %>
-download_rate = <%= @download_rate || node[:rtorrent][:download_rate] %>
+upload_rate = <%= @user.rtorrent[:upload_rate] %>
+download_rate = <%= @user.rtorrent[:download_rate] %>
 
 # Maximum and minimum number of peers to connect to per torrent.
-min_peers = <%= @min_peers || node[:rtorrent][:min_peers] %>
-max_peers = <%= @max_peers || node[:rtorrent][:max_peers] %>
+min_peers = <%= @user.rtorrent[:min_peers] %>
+max_peers = <%= @user.rtorrent[:max_peers] %>
 
 # Same as above but for seeding completed torrents (-1 = same as downloading)
-min_peers_seed = <%= @min_peers_seed || node[:rtorrent][:min_peers_seed] %>
-max_peers_seed = <%= @min_peers_seed || node[:rtorrent][:max_peers_seed] %>
+min_peers_seed = <%= @user.rtorrent[:min_peers_seed] %>
+max_peers_seed = <%= @user.rtorrent[:max_peers_seed] %>
 
 # Maximum number of simultaneous uploads per torrent.
-# max_uploads = <%= @max_uploads || node[:rtorrent][:max_uploads] %>
+# max_uploads = <%= @user.rtorrent[:max_uploads] %>
 
 # Max upload and download slots allowed
-# max_uploads_global = <%= @max_uploads_global || node[:rtorrent][:max_uploads_global] %>
-# max_downloads_global = <%= @max_downloads_global || node[:rtorrent][:max_downloads_global] %>
+# max_uploads_global = <%= @user.rtorrent[:max_uploads_global] %>
+# max_downloads_global = <%= @user.rtorrent[:max_downloads_global] %>
 
 
 
@@ -62,14 +62,16 @@ max_peers_seed = <%= @min_peers_seed || node[:rtorrent][:max_peers_seed] %>
 #
 
 # The ip address reported to the tracker.
-ip = <%= @ipaddress || node[:ipaddress] %>
+ip = <%= @user.rtorrent[:ipaddress] %>
 
 # The ip address the listening socket and outgoing connections is bound to.
 #bind = 127.0.0.1
-scgi_port = 127.0.0.1:50<%= @index %>
+# scgi_port = 127.0.0.1:50<%= @user.index%>
+scgi_local = <%= @user.home %>/.session/rtorrent.socket
+schedule = chmod,0,0,"execute=chmod,777,<%= @user.home %>/.session/rtorrent.socket"
 
 # Port range to use for listening.
-port_range = 629<%= @index %>-629<%= @index %>
+port_range = 62<%= @user.index %>-62<%= @user.index %>
 
 # Start opening ports at a random position within the port range.
 port_random = <%= node[:rtorrent][:port_random] %>
@@ -103,15 +105,15 @@ hash_interval = <%= node[:rtorrent][:hash_interval] %>
 hash_max_tries = <%= node[:rtorrent][:hash_max_tries] %>
 
 # Max number of files to keep open simultaneously.
-set_max_open_files = <%= @max_open_files || node[:rtorrent][:max_open_files] %>
+set_max_open_files = <%= @user.rtorrent[:max_open_files] %>
 
 # Set the max amount of memory space used to mapping file chunks.
 # This may also be set using ulimit -m where 3/4 will be allocated to file chunks.
-# max_memory_usage = <%= @max_memory || node[:rtorrent][:max_memory_usage] %>
+# max_memory_usage = <%= @user.rtorrent[:max_memory] %>
 
 # Adjust the send and receive buffer size for socket.
-# send_buffer_size = <%= @send_buffer_size || node[:rtorrent][:send_buffer_size] %>
-# receive_buffer_size = <%= @receive_buffer_size || node[:rtorrent][:receive_buffer_size] %>
+# send_buffer_size = <%= @user.rtorrent[:send_buffer_size] %>
+# receive_buffer_size = <%= @user.rtorrent[:receive_buffer_size] %>
 
 
 
@@ -119,8 +121,8 @@ set_max_open_files = <%= @max_open_files || node[:rtorrent][:max_open_files] %>
 #
 
 # Watch a directory for new torrents, and stop those that have been deleted.
-schedule = watch_directory,5,60,load_start=<%= @user_dir %>/watch/*.torrent
-#schedule = untied_directory,5,60,stop_untied=~/watch/*.torrent
+schedule = watch_directory,5,60,load_start=<%= @user.home %>/watch/*.torrent
+#schedule = untied_directory,5,60,stop_untied=<%= @user.home %>/watch/*.torrent
 
 # Close torrents when diskspace is low.
 schedule = low_diskspace,5,60,close_low_diskspace=1000M

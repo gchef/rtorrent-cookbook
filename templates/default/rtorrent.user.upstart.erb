@@ -1,0 +1,14 @@
+description "<%= @user.name %> rtorrent"
+
+console none
+expect fork
+kill timeout 30
+
+start on ((local-filesystems and net-device-up and runlevel [2345]) or (starting rtorrent))
+stop on (runlevel [016] or stopping rtorrent)
+
+exec su <%= @user.name %> -c "screen -dms rtorrent /usr/local/bin/rtorrent"
+
+pre-stop script
+  exec kill $(cat <%= @user.home %>/.session/rtorrent.lock | awk -F: '{ print $2 }' | sed "s/[^0-9]//g")
+end script
