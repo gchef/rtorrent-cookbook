@@ -1,14 +1,16 @@
 description "<%= @user.name %> rtorrent"
 
-console none
 expect fork
 kill timeout 30
 
-start on ((local-filesystems and net-device-up and runlevel [2345]) or (starting rtorrent))
-stop on (runlevel [016] or stopping rtorrent)
+start on (local-filesystems and net-device-up and runlevel [2345])
+stop on runlevel [016]
 
-exec su <%= @user.name %> -c "screen -dms rtorrent /usr/local/bin/rtorrent"
+script
+  su <%= @user.name %> -c "screen -dms rtorrent /usr/local/bin/rtorrent"
+end script
 
-pre-stop script
-  exec kill $(cat <%= @user.home %>/.session/rtorrent.lock | awk -F: '{ print $2 }' | sed "s/[^0-9]//g")
+post-stop script
+  [ -f <%= @user.home %>/.session/rtorrent.lock ] && kill $(cat <%= @user.home %>/.session/rtorrent.lock | awk -F+ '{ print $2 }')
+  [ -f <%= @user.home %>/.session/rtorrent.socket ] && rm <%= @user.home %>/.session/rtorrent.socket
 end script

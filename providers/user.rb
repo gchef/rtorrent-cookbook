@@ -50,13 +50,6 @@ action :create do
   # service "rtorrent-#{@@user.name}" do
   #   action :start
   # end
-
-  # Password used by the webserver for basic authentication
-  #
-  htpasswd("#{@@user.home}/.passwd")
-
-  # Webserver config
-  # ...
 end
 
 action :disable do

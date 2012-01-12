@@ -24,6 +24,6 @@ template "/etc/init/rtorrent.conf" do
   backup false
 end
 
-service "rtorrent" do
-  action [:enable, :start]
-end
+# service "rtorrent" do
+#   action [:enable, :start]
+# end
