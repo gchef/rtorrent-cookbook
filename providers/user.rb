@@ -9,13 +9,12 @@ action :create do
     end
   end
 
-  # Service definition so that changes in the upstart template can trigger a
-  # restart
+  # Each user's rtorrent instance is controlled via an upstart job
   #
-  # service "rtorrent-#{@@user.name}" do
-  #   provider Chef::Provider::Service::Upstart
-  #   action :enable
-  # end
+  service "rtorrent-#{@@user.name}" do
+    provider Chef::Provider::Service::Upstart
+    action :enable
+  end
 
   # rtorrent upstart job, specific for this user
   #
@@ -27,7 +26,7 @@ action :create do
       :user => @@user
     )
     backup false
-    # notifies :restart, resources(:service => "rtorrent-#{@@user.name}"), :delayed
+    notifies :restart, resources(:service => "rtorrent-#{@@user.name}"), :delayed
   end
 
   # rtorrent config, specific for this user
@@ -42,14 +41,14 @@ action :create do
       :user => @@user
     )
     backup false
-    # notifies :restart, resources(:service => "rtorrent-#{@@user.name}"), :delayed
+    notifies :restart, resources(:service => "rtorrent-#{@@user.name}"), :delayed
   end
 
   # Ensure user's rtorrent is running
   #
-  # service "rtorrent-#{@@user.name}" do
-  #   action :start
-  # end
+  service "rtorrent-#{@@user.name}" do
+    action :start
+  end
 end
 
 action :disable do

@@ -1,9 +1,10 @@
 description "<%= @user.name %> rtorrent"
 
-start on (local-filesystems and net-device-up and runlevel [2345])
-stop on runlevel [016]
+start on ((local-filesystems and net-device-up and runlevel [2345]) or starting rtorrent)
+stop on (runlevel [016] or stopping rtorrent)
 
 pre-start script
+  rm -f <%= @user.home %>/.session/rtorrent.socket
   su <%= @user.name %> -c "screen -dms rtorrent /usr/local/bin/rtorrent"
 end script
 
