@@ -27,7 +27,7 @@
   $do_diagnostic = true;
   //
    // path to log file (comment or make empty to disable logging)
-  $log_file = '/var/log/rutorrent/<%= @username %>.log';
+  $log_file = '/var/log/rutorrent/<%= @user.name %>.log';
 
   // Save uploaded torrents into profile/torrents directory or not
   $saveUploadedTorrents = false; 
@@ -37,21 +37,21 @@
 
   // Chroot directoy for user. Users have no access to directories below
   // the "Top" directory. Also used by plugins like getdir, diskspace ect.
-  $topDirectory = '<%= @user_home %>';
+  $topDirectory = '<%= @user.home %>';
   // If true, allows for single user style configuration, even with webauth
   $forbidUserSettings = false;
 
   // For multi-user setups, each user would get a different port number
   // (unless you are using unix based sockets)
-  $scgi_port = <%= @port %>;
+  // $scgi_port = 500x;
   // This will almost always be 127.0.0.1 (unless using unix based socket, in
   // which case it would be something like $scgi_host = "unix:///tmp/rpc.socket";)
-  $scgi_host = "127.0.0.1";
+  $scgi_host = "unix://<%= @user.home %>/.session/rtorrent.socket";
 
   // XMLRPC Mount Point - This defaults to /RPC2 but can be set to anything inside
   // your webspace. If you are setting up multiple users, each user would get a
   // different setting here. This setting is required, don't remove it.
-  $XMLRPCMountPoint = "/<%= @rpc %>"; // DO NOT DELETE THIS LINE!!! DO NOT COMMENT THIS LINE!!!
+  $XMLRPCMountPoint = "/RPC<%= @user.index %>"; // DO NOT DELETE THIS LINE!!! DO NOT COMMENT THIS LINE!!!
 
   // For web->rtorrent link through unix domain socket
   // (scgi_local in rtorrent conf file), change variables

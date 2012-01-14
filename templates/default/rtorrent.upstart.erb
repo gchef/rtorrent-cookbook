@@ -1,0 +1,8 @@
+description	"Controls all rtorrent instances"
+
+start on (local-filesystems and net-device-up and runlevel [2345])
+stop on runlevel [016]
+
+pre-start exec echo "All rtorrent instance UP!" >> /var/log/syslog
+
+post-stop exec echo "All rtorrent instance DOWN!" >> /var/log/syslog
