@@ -29,3 +29,7 @@ directory "/var/log/rutorrent" do
   mode "0755"
   recursive true
 end
+
+bootstrap_logrotate "rutorrent" do
+  rotate "daily"
+end
