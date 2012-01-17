@@ -13,7 +13,6 @@ action :create do
   #
   service "rtorrent-#{@@user.name}" do
     provider Chef::Provider::Service::Upstart
-    action :enable
   end
 
   # rtorrent upstart job, specific for this user
@@ -47,7 +46,7 @@ action :create do
   # Ensure user's rtorrent is running
   #
   service "rtorrent-#{@@user.name}" do
-    action :start
+    action [:enable, :start]
   end
 end
 
