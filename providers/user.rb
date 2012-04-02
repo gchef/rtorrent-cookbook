@@ -59,6 +59,8 @@ action :delete do
 end
 
 def load_current_resource
+  require ::File.expand_path('../../../bootstrap/lib/passwd', __FILE__)
   extend Bootstrap::Passwd
+  require ::File.expand_path('../../lib/user', __FILE__)
   @@user = Rtorrent::User.new(new_resource, node)
 end

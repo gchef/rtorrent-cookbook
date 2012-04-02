@@ -1,5 +1,7 @@
+require ::File.expand_path('../../../bootstrap/lib/user', __FILE__)
+
 module Rtorrent
-  class User < Bootstrap::User
+  class User < ::Bootstrap::User
 
     def index
       @index ||= node[:system_users].find_index do |username, properties|
