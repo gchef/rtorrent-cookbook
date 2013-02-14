@@ -6,7 +6,7 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "2.0.1"
 
 depends "apt" # https://github.com/gchef/apt-cookbook
-depends "boostrap" # https://github.com/gchef/bootstrap-cookbook
+depends "bootstrap" # https://github.com/gchef/bootstrap-cookbook
 depends "build-essential"
 
 recipe  "rtorrent", "General setup"
