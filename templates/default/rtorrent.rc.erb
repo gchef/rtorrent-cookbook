@@ -66,12 +66,12 @@ ip = <%= @user.rtorrent[:ipaddress] %>
 
 # The ip address the listening socket and outgoing connections is bound to.
 #bind = 127.0.0.1
-# scgi_port = 127.0.0.1:50<%= @user.index%>
+# scgi_port = 127.0.0.1:50<%= @user.rtorrent[:index] %>
 scgi_local = <%= @user.home %>/.session/rtorrent.socket
 schedule = chmod,0,0,"execute=chmod,777,<%= @user.home %>/.session/rtorrent.socket"
 
 # Port range to use for listening.
-port_range = 62<%= @user.index %>-62<%= @user.index %>
+port_range = 62<%= @user.rtorrent[:index] %>-62<%= @user.rtorrent[:index] %>
 
 # Start opening ports at a random position within the port range.
 port_random = <%= node[:rtorrent][:port_random] %>

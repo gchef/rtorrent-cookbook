@@ -26,11 +26,13 @@ default[:rtorrent][:package_dependencies] = %w[
 # Wonslung's config => http://forums.rutorrent.org/index.php?topic=254.msg1616#msg1616
 default[:rtorrent][:check_hash]   = "no"
 default[:rtorrent][:encryption]   = "allow_incoming,enable_retry,prefer_plaintext"
-default[:rtorrent][:ratio]        = true
-default[:rtorrent][:ratio_min]    = 1000
-default[:rtorrent][:ratio_max]    = 2000
-default[:rtorrent][:ratio_upload] = "200M"
+default[:rtorrent][:index]        = "00"
 default[:rtorrent][:ipaddress]    = node[:ipaddress]
+default[:rtorrent][:ratio]        = true
+default[:rtorrent][:ratio_max]    = 2000
+default[:rtorrent][:ratio_min]    = 1000
+default[:rtorrent][:ratio_upload] = "200M"
+default[:rtorrent][:rutorrent]    = false
 
 ######################################################################## THROTTLE ###
 #
@@ -63,7 +65,6 @@ default[:rtorrent][:max_open_files]      = 768
 # default[:rtorrent][:send_buffer_size]    = 0
 # default[:rtorrent][:receive_buffer_size] = "128K"
 # default[:rtorrent][:receive_buffer_size] = 0
-
 
 
 #####################################################################################

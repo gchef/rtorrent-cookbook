@@ -13,6 +13,7 @@ action :create do
   #
   service "rtorrent-#{@@user.name}" do
     provider Chef::Provider::Service::Upstart
+    supports :restart => true
   end
 
   # rtorrent upstart job, specific for this user
@@ -47,6 +48,50 @@ action :create do
   #
   service "rtorrent-#{@@user.name}" do
     action [:enable, :start]
+  end
+
+  if @@user.rtorrent[:rutorrent]
+    # rutorrent shared data
+    #
+    bash "rutorrent shared directory" do
+      code %{
+        [ ! -d #{@@user.home}/share ] && mkdir #{@@user.home}/share
+        [ ! -d #{@@user.home}/share/settings ] && mkdir #{@@user.home}/share/settings
+
+        chown -fR #{@@user.name}: #{@@user.home}/share
+        chmod -fR 777 #{@@user.home}/share
+        exit 0
+      }
+    end
+
+    # Setting up rutorrent
+    #
+    bash "Set up rutorrent v#{node[:rutorrent][:version]} for #{@@user.name}" do
+      cwd @@user.home
+      code %{
+        tar -zxf /usr/local/src/rutorrent-#{node[:rutorrent][:version]}.tar.gz
+        rm -fR rutorrent/plugins
+        cd rutorrent
+        tar -zxf /usr/local/src/plugins-#{node[:rutorrent][:version]}.tar.gz
+        [ ! -L share ] && rm -fr share && ln -s #{@@user.home}/share .
+        chown -fR #{@@user.name}: #{@@user.home}/rutorrent
+        chmod -fR 777 #{@@user.home}/rutorrent
+        exit 0
+      }
+      only_if %{[ ! -d #{@@user.home}/rutorrent ] || [ $(cat #{@@user.home}/rutorrent/js/webui.js | grep -c "version: \\"#{node[:rutorrent][:version]}") = 0 ]}
+    end
+
+    template "#{@@user.home}/rutorrent/conf/config.php" do
+      cookbook "rtorrent"
+      source "rutorrent.config.php.erb"
+      owner @@user.name
+      group @@user.name
+      mode "0777"
+      backup false
+      variables(
+        :user => @@user
+      )
+    end
   end
 end
 
