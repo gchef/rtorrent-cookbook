@@ -90,20 +90,6 @@ tracker_numwant = <%= node[:rtorrent][:tracker_numwant] %>
 ### ADVANCED SETTINGS
 #
 
-# Hash read-ahead controls how many MB to request the kernel to read
-# ahead. If the value is too low the disk may not be fully utilized,
-# while if too high the kernel might not be able to keep the read
-# pages in memory thus end up trashing.
-hash_read_ahead = <%= node[:rtorrent][:hash_read_ahead] %>
-
-# Interval between attempts to check the hash, in milliseconds.
-hash_interval = <%= node[:rtorrent][:hash_interval] %>
-
-# Number of attempts to check the hash while using the mincore status,
-# before forcing. Overworked systems might need lower values to get a
-# decent hash checking rate.
-hash_max_tries = <%= node[:rtorrent][:hash_max_tries] %>
-
 # Max number of files to keep open simultaneously.
 set_max_open_files = <%= @user.rtorrent[:max_open_files] %>
 

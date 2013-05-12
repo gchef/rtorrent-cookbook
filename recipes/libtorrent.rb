@@ -1,6 +1,5 @@
 remote_file "/usr/local/src/libtorrent-#{node[:rtorrent][:libtorrent][:version]}.tar.gz" do
   source node[:rtorrent][:libtorrent][:source]
-  checksum node[:rtorrent][:libtorrent][:checksum]
   backup false
   action :create_if_missing
 end
